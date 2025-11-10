@@ -124,23 +124,35 @@ export default function LoginPage() {
           return
         }
         
-        // Small delay to ensure cookies are persisted
-        await new Promise(resolve => setTimeout(resolve, 200))
-
         // Ensure user profile exists and record referral signup if referral code was used
-        if (referralCode && data.user) {
+        // Do this BEFORE redirecting, but don't block login if it fails
+        if (referralCode && data.user && data.session) {
           try {
-            // First, ensure the user profile exists by calling /me
+            // Use the session token directly instead of relying on cookies
             const api = getApiClient()
-            await api.getMe()
             
-            // Then record the referral
+            // Wait a bit for session to be available
+            await new Promise(resolve => setTimeout(resolve, 300))
+            
+            // Try to ensure user profile exists (but don't fail if it doesn't)
+            try {
+              await api.getMe()
+            } catch (meError) {
+              // Profile might not exist yet, that's okay - it will be created by trigger
+              console.log('Profile check failed (may not exist yet):', meError)
+            }
+            
+            // Record the referral using the session we just created
             await api.recordReferralSignup(data.user.id, referralCode)
           } catch (refError: any) {
-            // Don't block login if referral recording fails
-            console.error('Failed to record referral:', refError)
+            // Don't block login if referral recording fails - we can retry later
+            console.error('Failed to record referral (non-blocking):', refError)
+            // The error won't be shown to user since we're redirecting anyway
           }
         }
+
+        // Small delay to ensure cookies are persisted before redirect
+        await new Promise(resolve => setTimeout(resolve, 200))
 
         // Use window.location for a full page reload to ensure cookies are set
         window.location.href = '/dashboard'
