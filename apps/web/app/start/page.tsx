@@ -48,7 +48,7 @@ export default function StartPage() {
                 required
               />
               <p className="mt-1 text-xs text-gray-400">
-                We'll send you a login code
+                We&apos;ll send you a login code
               </p>
             </div>
 

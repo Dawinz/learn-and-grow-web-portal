@@ -24,11 +24,11 @@ export function getApiClient(): ApiClient {
     if (session?.access_token) {
       return {
         Authorization: `Bearer ${session.access_token}`,
-      }
+      } as HeadersInit
     }
     
     // Return empty headers for unauthenticated requests
-    return {}
+    return {} as HeadersInit
   })
 }
 

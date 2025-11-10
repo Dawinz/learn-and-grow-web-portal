@@ -96,7 +96,7 @@ export function ReferralSection() {
           <ul className="text-xs text-blue-100 space-y-1 list-disc list-inside">
             <li>Share your referral link with friends</li>
             <li>They need to earn 10,000 XP and make at least 1 withdrawal</li>
-            <li>You'll receive 1,000 XP when they qualify!</li>
+            <li>You&apos;ll receive 1,000 XP when they qualify!</li>
           </ul>
         </div>
 

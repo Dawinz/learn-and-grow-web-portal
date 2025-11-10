@@ -109,6 +109,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
   if (loading) {
@@ -157,7 +158,7 @@ export default function DashboardPage() {
         {/* Page Header */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-white mb-2">Dashboard</h2>
-          <p className="text-gray-400">Welcome back! Here's your account overview.</p>
+          <p className="text-gray-400">Welcome back! Here&apos;s your account overview.</p>
         </div>
 
         {/* Main Stats Cards */}
