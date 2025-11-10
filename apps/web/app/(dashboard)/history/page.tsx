@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { getApiClient } from '@/lib/api-client'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Header } from '@/components/Header'
 
 interface Withdrawal {
   id: string
@@ -71,16 +70,18 @@ export default function HistoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <div className="text-white">Loading...</div>
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-800 rounded w-64 mb-4"></div>
+          <div className="h-4 bg-gray-800 rounded w-48 mb-8"></div>
+          <div className="bg-gray-800 rounded-lg h-64"></div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800">
-      <Header />
-      <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Withdrawal History</h1>
           <p className="text-gray-400">View all your withdrawal requests</p>
@@ -157,7 +158,6 @@ export default function HistoryPage() {
             </div>
           )}
         </div>
-      </div>
     </div>
   )
 }
