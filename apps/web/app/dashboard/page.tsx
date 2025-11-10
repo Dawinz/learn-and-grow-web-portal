@@ -88,7 +88,7 @@ export default function DashboardPage() {
         xp_balance: me.xp_balance,
         tzs_per_xp: rate.tzs_per_xp,
         effective_from: rate.effective_from,
-        last_withdrawals: withdrawals.withdrawals,
+        last_withdrawals: withdrawals.withdrawals.slice(0, 5),
         next_eligible_date: nextEligibleDate,
       })
       setError(null)

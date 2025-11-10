@@ -1,4 +1,4 @@
-import { ApiClient } from '@/api-client'
+import { ApiClient } from './api-client-core'
 import { createClient } from './supabase/client'
 
 export function getApiClient(): ApiClient {
