@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { getApiClient } from '@/lib/api-client'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/lib/toast'
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase/config'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -57,19 +58,12 @@ export default function LoginPage() {
 
     setLoading(true)
     try {
-      // Call the Edge Function directly without requiring auth
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      
-      if (!supabaseUrl || !supabaseAnonKey) {
-        throw new Error('Supabase configuration missing')
-      }
-
-      const response = await fetch(`${supabaseUrl}/functions/v1/auth-otp`, {
+      // Use the config constants which have fallbacks
+      const response = await fetch(`${SUPABASE_URL}/functions/v1/auth-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'apikey': supabaseAnonKey,
+          'apikey': SUPABASE_ANON_KEY,
         },
         body: JSON.stringify({ 
           email: emailValue, 
