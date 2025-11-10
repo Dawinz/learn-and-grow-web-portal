@@ -59,11 +59,13 @@ export default function LoginPage() {
     setLoading(true)
     try {
       // Use the config constants which have fallbacks
+      // Supabase Edge Functions require both apikey and Authorization headers
       const response = await fetch(`${SUPABASE_URL}/functions/v1/auth-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
         },
         body: JSON.stringify({ 
           email: emailValue, 
