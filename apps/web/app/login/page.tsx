@@ -57,12 +57,37 @@ export default function LoginPage() {
 
     setLoading(true)
     try {
-      const api = getApiClient()
-      await api.sendOtp(emailValue, referralCode || undefined)
+      // Call the Edge Function directly without requiring auth
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Supabase configuration missing')
+      }
+
+      const response = await fetch(`${supabaseUrl}/functions/v1/auth-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseAnonKey,
+        },
+        body: JSON.stringify({ 
+          email: emailValue, 
+          referral_code: referralCode || undefined 
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.message || data.error || 'Failed to send OTP')
+      }
+
       setStep('otp')
       setEmail(emailValue)
       showToast('Verification code sent to your email', 'success')
     } catch (err: any) {
+      console.error('Error sending OTP:', err)
       const errorMessage = err.message || 'Failed to send OTP'
       setError(errorMessage)
       showToast(errorMessage, 'error')
